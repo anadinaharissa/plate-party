@@ -33,7 +33,7 @@ input::placeholder{color:#A79E92;}
 @keyframes ppRow{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 </style>
 </helmet>
-<div style="min-height:100vh;display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:center;background:#E9E3D8;padding:{{ frame.pad }};font-family:'DM Sans',sans-serif;color:#1C1A17">
+<div style="min-height:{{ frame.outerMin }};display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:center;background:#E9E3D8;padding:{{ frame.pad }};font-family:'DM Sans',sans-serif;color:#1C1A17">
 <sc-if value="{{ fb.show }}" hint-placeholder-val="{{ false }}">
 <div style="width:300px;flex-shrink:0;background:#FFFFFF;border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 20px 40px -24px rgba(40,30,20,0.35)">
   <div style="display:flex;align-items:center;gap:8px"><span style="font-size:20px">📝</span><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800">Designer note</span></div>
@@ -248,7 +248,7 @@ input::placeholder{color:#A79E92;}
   <div style="animation:ppIn .32s cubic-bezier(.2,.8,.2,1) 0.070s backwards;flex:1;min-height:10px"></div>
   <div style="animation:ppIn .32s cubic-bezier(.2,.8,.2,1) 0.105s backwards;flex-shrink:0;font-size:12px;font-weight:700;letter-spacing:0.08em;color:#6E655A">FIND ONE ON</div>
   <sc-for list="{{ raid.socials }}" as="x" hint-placeholder-count="3">
-    <a href="{{ x.url }}" target="_blank" rel="noopener" style="animation:ppIn .32s cubic-bezier(.2,.8,.2,1) 0.140s backwards;flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:8px;height:52px;border-radius:16px;background:#FFFFFF;border:1.5px solid #E8E1D5;font-size:16px;font-weight:700;color:#1C1A17">{{ x.label }}<span style="font-family:'Material Symbols Rounded';font-size:18px;color:#6E655A;line-height:1">open_in_new</span></a>
+    <a href="{{ x.url }}" target="_blank" rel="noopener" style="animation:ppIn .32s cubic-bezier(.2,.8,.2,1) 0.140s backwards;flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:8px;height:52px;border-radius:16px;background:#FFFFFF;border:1.5px solid #E8E1D5;font-size:16px;font-weight:700;color:#1C1A17"><span style="width:22px;height:22px;flex-shrink:0;border-radius:5px;background:{{ x.icon }}"></span><span>{{ x.name }}</span></a>
   </sc-for>
 </div>
 </sc-if>
@@ -263,7 +263,7 @@ input::placeholder{color:#A79E92;}
     <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:76px;font-weight:800;line-height:1;letter-spacing:-0.03em;font-variant-numeric:tabular-nums">{{ rc.time }}</span>
     <span style="font-size:13px;color:#6E655A">{{ rc.since }}</span>
   </div>
-  <div style="animation:ppIn .32s cubic-bezier(.2,.8,.2,1) 0.070s backwards;flex:1 1 0;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:3px 3px 28px;margin:-3px;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 28px),transparent)">
+  <div style="animation:ppIn .32s cubic-bezier(.2,.8,.2,1) 0.070s backwards;flex:1 1 0;min-height:0;scrollbar-width:none;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:3px 3px 28px;margin:-3px;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 28px),transparent)">
     <div style="flex-shrink:0;display:flex;justify-content:space-between;align-items:center"><div style="flex-shrink:0;font-size:12px;font-weight:700;letter-spacing:0.08em;color:#6E655A">TAP WHAT YOU'VE USED</div><span style="font-size:13px;font-weight:700">{{ rc.count }}</span></div>
     <sc-if value="{{ rc.noTiles }}" hint-placeholder-val="{{ false }}"><div style="flex-shrink:0;background:#FFFFFF;border-radius:16px;padding:14px;font-size:14px;color:#6E655A;text-align:center">You don't have any of this recipe's ingredients yet.</div></sc-if>
     <div style="flex-shrink:0;display:grid;grid-template-columns:1fr 1fr;gap:10px">
@@ -316,7 +316,7 @@ input::placeholder{color:#A79E92;}
   </div>
   <div style="padding:4px 18px 0;display:flex;flex-direction:column;gap:12px;flex:1">
     <div style="flex-shrink:0;font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;line-height:1;letter-spacing:-0.02em">{{ dish.title }}</div>
-    <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:600;background:#FFFFFF;border:1.5px solid #E8E1D5;white-space:nowrap;flex-shrink:0">{{ dish.flavor }}</span><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:600;background:#FFFFFF;border:1.5px solid #E8E1D5;white-space:nowrap;flex-shrink:0">{{ dish.type }}</span><span style="flex:1"></span><span style="font-size:13px;color:#6E655A;white-space:nowrap">{{ dish.source }}</span></div>
+    <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:600;background:#FFFFFF;border:1.5px solid #E8E1D5;white-space:nowrap;flex-shrink:0">{{ dish.flavor }}</span><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:600;background:#FFFFFF;border:1.5px solid #E8E1D5;white-space:nowrap;flex-shrink:0">{{ dish.type }}</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:6px;font-size:13px;color:#6E655A;white-space:nowrap"><sc-if value="{{ dish.hasSrcIcon }}" hint-placeholder-val="{{ false }}"><span style="width:18px;height:18px;border-radius:4px;background:{{ dish.srcIcon }}"></span></sc-if>{{ dish.source }}</span></div>
     <div style="flex-shrink:0;font-size:12px;font-weight:700;letter-spacing:0.08em;color:#6E655A">{{ dish.ingLabel }}</div>
     <div style="flex-shrink:0;background:#FFFFFF;border-radius:16px;padding:4px 12px">
       <sc-for list="{{ dish.ings }}" as="g" hint-placeholder-count="3">
@@ -385,7 +385,7 @@ input::placeholder{color:#A79E92;}
     <span style="font-size:12px;font-weight:700;letter-spacing:0.1em">CHEF OF THE NIGHT</span>
     <div style="display:flex;align-items:center;gap:14px">
       <span style="width:72px;height:72px;border-radius:36px;background:{{ rlt.chefAv }};border:3px solid #1C1A17;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;flex-shrink:0">{{ rlt.chefInitial }}</span>
-      <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:36px;font-weight:800;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">👑 {{ rlt.chef }}</span><span style="align-self:flex-start;max-width:100%;background:#1C1A17;color:#FFFFFF;border-radius:14px;padding:6px 12px;font-size:14px;font-weight:700;line-height:1.3">{{ rlt.missionChip }}</span></div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:36px;font-weight:800;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">👑 {{ rlt.chef }}</span><span style="flex-shrink:0;align-self:flex-start;max-width:100%;background:#1C1A17;color:#FFFFFF;border-radius:14px;padding:6px 12px;font-size:14px;font-weight:700;line-height:1.3">{{ rlt.missionChip }}</span></div>
     </div>
     <div style="height:1.5px;background:rgba(28,26,23,0.2)"></div>
     <span style="font-size:12px;font-weight:700;letter-spacing:0.1em">COOK THIS</span>
@@ -398,7 +398,7 @@ input::placeholder{color:#A79E92;}
     </sc-for>
     <sc-if value="{{ rlt.noRows }}" hint-placeholder-val="{{ false }}">
       <div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:14px">No saved dish fits yet. Find one on:</span>
-        <div style="display:flex;gap:6px"><sc-for list="{{ rlt.socials }}" as="x" hint-placeholder-count="3"><a href="{{ x.url }}" target="_blank" rel="noopener" style="flex:1;display:flex;align-items:center;justify-content:center;height:44px;border-radius:14px;background:#FFFFFF;font-size:14px;font-weight:700;color:#1C1A17">{{ x.short }}</a></sc-for></div>
+        <div style="display:flex;gap:6px"><sc-for list="{{ rlt.socials }}" as="x" hint-placeholder-count="3"><a href="{{ x.url }}" target="_blank" rel="noopener" style="flex:1;display:flex;gap:6px;align-items:center;justify-content:center;height:44px;border-radius:14px;background:#FFFFFF;font-size:14px;font-weight:700;color:#1C1A17"><span style="width:18px;height:18px;flex-shrink:0;border-radius:4px;background:{{ x.icon }}"></span><span>{{ x.shortName }}</span></a></sc-for></div>
       </div>
     </sc-if>
   </div>
@@ -588,7 +588,7 @@ input::placeholder{color:#A79E92;}
 
     <sc-if value="{{ sheet.importLink }}" hint-placeholder-val="{{ false }}">
       <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800">Add a dish</div>
-      <div style="font-size:15px;color:#6E655A">Paste a TikTok, Instagram or YouTube link.</div>
+      <div style="display:flex;align-items:center;gap:10px"><div style="display:flex;gap:4px"><span style="width:26px;height:26px;border-radius:6px;background:url('assets/tiktok.png') center/cover no-repeat"></span><span style="width:26px;height:26px;border-radius:6px;background:url('assets/ig.png') center/cover no-repeat"></span><span style="width:26px;height:26px;border-radius:6px;background:url('assets/yt.png') center/cover no-repeat"></span></div><span style="font-size:15px;color:#6E655A">Paste a TikTok, Instagram or YouTube link.</span></div>
       <input value="{{ imp.link }}" onChange="{{ imp.onLink }}" placeholder="https://…" style="width:100%;height:50px;background:#FFFFFF;border:2px solid #1C1A17;border-radius:14px;padding:0 14px;font-size:16px;font-family:inherit;color:#1C1A17;outline:none">
       <div style="font-size:12px;color:#A79E92">Prototype: try a link containing burger, pasta, taco, curry, salad, egg or pancake.</div>
       <div onClick="{{ imp.go }}" style="display:flex;align-items:center;justify-content:center;height:56px;border-radius:18px;background:#B9A6F2;color:#1C1A17;font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;cursor:pointer;opacity:{{ imp.op }};transition:transform .18s cubic-bezier(.34,1.56,.64,1), background-color .2s ease, box-shadow .2s ease, opacity .2s ease, color .2s ease" style-active="transform:scale(0.96)">Import recipe</div>
@@ -623,14 +623,15 @@ input::placeholder{color:#A79E92;}
     </sc-if>
     <sc-if value="{{ sheet.pantryForm }}" hint-placeholder-val="{{ false }}">
       <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;padding-right:40px">{{ pf.heading }}</div>
-      <div style="display:flex;gap:12px;align-items:flex-end">
+      <div style="position:relative;display:flex;gap:12px;align-items:flex-end">
         <div onClick="{{ pf.toggleEmoji }}" style="position:relative;width:64px;height:64px;border-radius:18px;background:#FFFFFF;border:1.5px solid #E8E1D5;display:flex;align-items:center;justify-content:center;font-size:34px;cursor:pointer;flex-shrink:0;transition:transform .18s cubic-bezier(.34,1.56,.64,1), background-color .2s ease, box-shadow .2s ease, opacity .2s ease, color .2s ease" style-active="transform:scale(0.96)">{{ pf.emoji }}<span style="position:absolute;right:-6px;bottom:-6px;width:26px;height:26px;border-radius:13px;background:#1C1A17;border:2px solid #FAF7F2;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:14px;color:#FFFFFF;line-height:1">edit</span></div>
         <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;font-weight:700;letter-spacing:0.08em;color:#6E655A">NAME</div><input value="{{ pf.name }}" onChange="{{ pf.onName }}" placeholder="e.g. Spinach" style="height:50px;background:#FFFFFF;border:1.5px solid #E8E1D5;border-radius:14px;padding:0 12px;font-size:15px;font-family:inherit;color:#1C1A17;outline:none;width:100%"></div>
-      </div>
-      <sc-if value="{{ pf.emojiOpen }}" hint-placeholder-val="{{ false }}"><div style="animation:ppPop .25s cubic-bezier(.34,1.56,.64,1) backwards;position:relative;flex-shrink:0;background:#FFFFFF;border:1.5px solid #E8E1D5;border-radius:18px;padding:10px;margin-top:4px">
+      <sc-if value="{{ pf.emojiOpen }}" hint-placeholder-val="{{ false }}"><div style="animation:ppPop .25s cubic-bezier(.34,1.56,.64,1) backwards;position:absolute;left:0;right:0;top:calc(100% + 10px);z-index:5;background:#FFFFFF;border:1.5px solid #E8E1D5;border-radius:18px;padding:10px;box-shadow:0 18px 36px -14px rgba(28,26,23,0.35)">
         <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:2px"><sc-for list="{{ pf.emojis }}" as="e" hint-placeholder-count="24"><div onClick="{{ e.onClick }}" style="height:36px;border-radius:10px;background:{{ e.bg }};display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.56,.64,1), background-color .2s ease, opacity .2s ease" style-active="transform:scale(0.88)">{{ e.char }}</div></sc-for></div>
         <span onClick="{{ pf.toggleEmoji }}" style="position:absolute;right:-6px;top:-6px;width:26px;height:26px;border-radius:13px;background:#1C1A17;border:2px solid #FAF7F2;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:14px;color:#FFFFFF;line-height:1;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.56,.64,1), background-color .2s ease, opacity .2s ease" style-active="transform:scale(0.88)">close</span>
       </div></sc-if>
+      </div>
+      
       <sc-if value="{{ pf.confirmOpen }}" hint-placeholder-val="{{ false }}"><div style="animation:ppFade .18s ease backwards;position:absolute;inset:0;z-index:4;background:rgba(250,247,242,0.96);border-radius:26px;padding:24px;display:flex;flex-direction:column;justify-content:center;gap:12px;text-align:center">
         <span style="font-size:44px">{{ pf.emoji }}</span>
         <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800">Remove {{ pf.name }}?</span>
@@ -766,7 +767,7 @@ const ingEmoji=n=>{const c=COMMON.find(x=>same(x.name,n));return c?c.emoji:(same
 const daysLeft=p=>Math.max(0,p.shelf-Math.floor((Date.now()-p.addedAt)/DAYMS));
 const pillFor=d=>{const c=d<=1?['#FDE2E1','#B42318']:d<=3?['#FFEBC9','#8A5300']:['#DDF1DA','#256B3B'];return {pill:d===0?'Use today':d===1?'1 day left':d+' days left',pillBg:c[0],pillFg:c[1]};};
 const chipStyle=on=>on?{bg:INK,fg:'#FFFFFF',border:'1.5px solid '+INK}:{bg:'#FFFFFF',fg:INK,border:'1.5px solid '+LINE};
-const sourceOf=u=>!u?'Added manually':/tiktok/.test(u)?'🎵 from TikTok':/instagram/.test(u)?'📸 from Instagram':/youtu/.test(u)?'▶️ from YouTube':'🔗 from the web';
+const sourceOf=u=>!u?'Added manually':/tiktok/.test(u)?'from TikTok':/instagram/.test(u)?'from Instagram':/youtu/.test(u)?'from YouTube':'🔗 from the web';
 
 const FB_KEY = 'plateparty-feedback-v1';
 const SCREEN_INFO = {
@@ -820,12 +821,65 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
+    if (this.props.preset) { this.applyPreset(this.props.preset); return; }
     this.onResize = () => this.setState({ vw: window.innerWidth, vh: window.innerHeight });
     window.addEventListener('resize', this.onResize);
     this.splashCheck();
     this.loadFb();
     this.fbT = setInterval(() => this.loadFb(), 30000);
   }
+
+  // ---------- static presets (Hi-Fi gallery) ----------
+  applyPreset(p) {
+    const now = Date.now(), ago = d => now - d * DAYMS;
+    const P = (n, a) => { const c = COMMON.find(x => x.name === n); return { id: 'p_' + n, ...c, addedAt: ago(a) }; };
+    const pantry = [P('Spinach', 2), P('Chicken', 1), P('Tomato', 3), P('Bread', 1), P('Eggs', 1), P('Cheese', 2), P('Garlic', 4), P('Onion', 5)];
+    const dishes = STARTERS.map((d, i) => { const t = (d.dishType + ' ' + d.title).toLowerCase(); return { id: 'd' + i, cooked: 0, ...d, img: d.img || (t.includes('burger') ? 'assets/burger.jpg' : t.includes('noodle') ? 'assets/noodles.jpg' : null) }; });
+    const members = ['Alex', 'Sam', 'Jo'].map((n, i) => ({ id: 'm' + i, name: n }));
+    const today = (new Date().getDay() + 6) % 7, days = Array(7).fill(null);
+    days[today] = { dishId: dishes[0].id, chef: 'Alex' }; days[(today + 1) % 7] = { dishId: dishes[1 % dishes.length].id, chef: 'Sam' };
+    const data = { household: 'The Flat', members, pantry, dishes, plan: { weekStart: weekStart(), days }, since: ago(40), avatar: 'assets/household.jpg', cover: 'assets/cover.jpg' };
+    const sel = ['p_Spinach', 'p_Chicken', 'p_Garlic'];
+    const selItems = pantry.filter(x => sel.includes(x.id));
+    const matches = dishes.map(x => ({ x, used: selItems.filter(q => x.ingredients.some(i => same(i, q.name))) })).filter(m => m.used.length).sort((a, b) => b.used.length - a.used.length).map(m => ({ id: m.x.id, used: m.used.map(q => q.name) }));
+    const d0 = (matches[0] && matches[0].id) || dishes[0].id;
+    const cookItems = pantry.filter(q => (dishes.find(x => x.id === d0) || dishes[0]).ingredients.some(i => same(i, q.name))).map(q => q.id);
+    const result = { chef: 'Alex', chefIdx: 0, taste: TASTES[1], custom: '', dishes: dishes.map(x => x.id).slice(0, 2) };
+    const base = { data, onboarded: true, sheet: null, toast: null };
+    const S = {
+      SPLASH: { screen: 'SPLASH', data: null, onboarded: false },
+      INTRO_1: { screen: 'INTRO', ob: { house: '', picks: {}, slide: 0, avatar: null } }, INTRO_2: { screen: 'INTRO', ob: { house: '', picks: {}, slide: 1, avatar: null } },
+      INTRO_3: { screen: 'INTRO', ob: { house: '', picks: {}, slide: 2, avatar: null } }, INTRO_4: { screen: 'INTRO', ob: { house: '', picks: {}, slide: 3, avatar: null } },
+      ONB_HOUSE: { screen: 'ONB_HOUSE', ob: { house: 'The Flat', picks: {}, slide: 3, avatar: 'assets/household.jpg' } },
+      ONB_PANTRY: { screen: 'ONB_PANTRY', ob: { house: 'The Flat', picks: { Eggs: true, Bread: true, Spinach: true, Tomato: true }, slide: 3, avatar: null } },
+      HOME: { screen: 'HOME' }, HOME_BELL: { screen: 'HOME', sheet: 'bell' },
+      PLAN: { screen: 'PLAN' }, PLAN_DAY: { screen: 'PLAN_DAY', planDay: (today + 2) % 7, planDish: dishes[0].id, planChef: 'Jo' },
+      RAID: { screen: 'RAID', raidSel: sel }, RAID_RESULT: { screen: 'RAID_RESULT', raidSel: sel, raidMatches: matches },
+      RAID_NOMATCH: { screen: 'RAID_NOMATCH', raidSel: ['p_Eggs', 'p_Tomato'] },
+      DISH: { screen: 'DISH', dishId: d0, dishFrom: 'RAID_RESULT', raidSel: sel },
+      RAID_COOK: { screen: 'RAID_COOK', cookMode: 'raid', cookDish: d0, cookItems, raidStart: now - 754000, raidNow: now, raidUsed: cookItems.slice(0, 1), cookRecipe: true, dishId: d0 },
+      RAID_DONE: { screen: 'RAID_DONE', raidResult: { n: 2, names: ['Spinach', 'Chicken'], ms: 1520000, raids: 3, dish: (() => { const x = dishes.find(y => y.id === d0); return { img: x.img, dishType: x.dishType, title: x.title }; })() } },
+      RLT: { screen: 'RLT', rltMode: 'random' }, RLT_CUSTOM: { screen: 'RLT', rltMode: 'custom', custom: 'Cook with only 5 ingredients' },
+      RLT_SHUFFLE: { screen: 'RLT_SHUFFLE', tick: 5 }, RLT_RESULT: { screen: 'RLT_RESULT', result, rltDish: result.dishes[0] },
+      RLT_COOK: { screen: 'RAID_COOK', result, cookMode: 'rlt', cookDish: result.dishes[0], cookItems: pantry.filter(q => dishes[0].ingredients.some(i => same(i, q.name))).map(q => q.id), raidStart: now - 1265000, raidNow: now, raidUsed: [], cookRecipe: false },
+      RLT_PHOTO: { screen: 'RLT_PHOTO', result, photoSrc: null }, RLT_PHOTO_DONE: { screen: 'RLT_PHOTO', result, photoSrc: 'assets/victory.jpg' },
+      KIT: { screen: 'KIT' }, KIT_MEMBERS: { screen: 'KIT_MEMBERS' }, KIT_DISHES: { screen: 'KIT_DISHES' }, KIT_PANTRY: { screen: 'KIT_PANTRY' },
+      KIT_DISH_FILTER: { screen: 'KIT_DISHES', sheet: 'dishFilter' }, KIT_PANTRY_FILTER: { screen: 'KIT_PANTRY', sheet: 'pantryFilter' },
+      KIT_ADD_DISH: { screen: 'KIT_DISHES', sheet: 'importLink', impLink: '', impReturn: 'KIT_DISHES' },
+      IMPORTING: { screen: 'IMPORTING', impPct: 62, impReturn: 'KIT_DISHES' }
+    };
+    const after = {
+      ING_EDIT: () => this.openPantryForm('edit', pantry[0]),
+      ING_EMOJI: () => { this.openPantryForm('edit', pantry[0]); this.setState(s => ({ pf: { ...s.pf, emojiOpen: true } })); },
+      ING_REMOVE: () => { this.openPantryForm('edit', pantry[0]); this.setState(s => ({ pf: { ...s.pf, confirm: true } })); },
+      ING_ADD: () => this.openPantryForm('add'),
+      EDIT: () => this.openEdit(d0, 'DISH')
+    };
+    const pre = { ING_EDIT: 'KIT_PANTRY', ING_EMOJI: 'KIT_PANTRY', ING_REMOVE: 'KIT_PANTRY', ING_ADD: 'KIT_PANTRY', EDIT: 'DISH' };
+    if (after[p]) this.setState({ ...base, screen: pre[p], dishId: d0 }, after[p]);
+    else this.setState({ ...base, ...(S[p] || S.HOME) });
+  }
+  say(text) { if (this.props.preset) return; this._say(text); }
 
   // ---------- feedback ----------
   async loadFb() {
@@ -913,7 +967,7 @@ class Component extends DCLogic {
     const changes = (st.fbChanges || []).slice().sort((a, b) => b.at - a.at);
     const tabBg = k => tab === k ? '#FFFFFF' : 'transparent';
     return {
-      show: !mobile && st.vw >= 760, screenLabel: info[0], note, admin,
+      show: !this.props.preset && !mobile && st.vw >= 760, screenLabel: info[0], note, admin,
       noteView: !st.fbNoteEdit, noteEditing: !!st.fbNoteEdit && admin,
       editNote: () => this.setState({ fbNoteEdit: true, fbNoteDraft: note }), cancelNote: () => this.setState({ fbNoteEdit: false }),
       noteDraft: st.fbNoteDraft || '', onNoteDraft: e => this.setState({ fbNoteDraft: e.target.value }), saveNote: () => this.saveNote(),
@@ -948,13 +1002,14 @@ class Component extends DCLogic {
   componentDidUpdate(pp, ps) {
     ps = ps || {};
     if (ps.screen !== this.state.screen && this.state.screen === 'SPLASH') this.splashCheck();
+    if (this.props.preset) return;
     if (ps.data !== this.state.data || ps.onboarded !== this.state.onboarded) {
       try { localStorage.setItem(KEY, JSON.stringify({ data: this.state.data, onboarded: this.state.onboarded })); }
       catch (e) { this.say('Storage is full. Try a smaller photo.'); }
     }
   }
 
-  say(text) { clearTimeout(this.toastT); this.setState({ toast: text }); this.toastT = setTimeout(() => this.setState({ toast: null }), 1900); }
+  _say(text) { clearTimeout(this.toastT); this.setState({ toast: text }); this.toastT = setTimeout(() => this.setState({ toast: null }), 1900); }
   go(screen, extra = {}) { this.setState({ screen, sheet: null, ...extra }); }
   upd(fn) { this.setState(s => { const d = JSON.parse(JSON.stringify(s.data)); fn(d); return { data: d }; }); }
 
@@ -1000,7 +1055,8 @@ class Component extends DCLogic {
   }
   socials(q) {
     const e = encodeURIComponent(q);
-    return [{ label: '🎵 TikTok', short: '🎵 TikTok', url: `https://www.tiktok.com/search?q=${e}` }, { label: '📸 Instagram', short: '📸 IG', url: `https://www.instagram.com/explore/search/keyword/?q=${e}` }, { label: '▶️ YouTube', short: '▶️ YT', url: `https://www.youtube.com/results?search_query=${e}` }];
+    const I = n => `url('assets/${n}.png') center/cover no-repeat`;
+    return [{ name: 'TikTok', shortName: 'TikTok', icon: I('tiktok'), url: `https://www.tiktok.com/search?q=${e}` }, { name: 'Instagram', shortName: 'IG', icon: I('ig'), url: `https://www.instagram.com/explore/search/keyword/?q=${e}` }, { name: 'YouTube', shortName: 'YouTube', icon: I('yt'), url: `https://www.youtube.com/results?search_query=${e}` }];
   }
 
   // ---------- raid ----------
@@ -1231,10 +1287,11 @@ class Component extends DCLogic {
 
   renderVals() {
     const st = this.state, d = st.data, sc = st.screen;
-    const mobile = st.vw < 520;
-    const frame = mobile
-      ? { pad: '0', w: '100vw', h: st.vh + 'px', r: '0', shadow: 'none', status: false, mobileTop: true, bleedUp: '-14px', navBottom: '18px' }
-      : { pad: '24px', w: '390px', h: '844px', r: '48px', shadow: '0 0 0 10px #1C1A17, 0 30px 60px -20px rgba(40,30,20,0.45)', status: true, mobileTop: false, bleedUp: '-50px', navBottom: '22px' };
+    const preset = !!this.props.preset, mobile = !preset && st.vw < 520;
+    const frame = preset ? { pad: '0', w: '390px', h: '844px', r: '0', shadow: 'none', status: true, mobileTop: false, bleedUp: '-50px', navBottom: '22px', outerMin: '0' }
+      : mobile
+      ? { pad: '0', w: '100vw', h: st.vh + 'px', r: '0', shadow: 'none', status: false, mobileTop: true, bleedUp: '-14px', navBottom: '18px', outerMin: '100vh' }
+      : { pad: '24px', w: '390px', h: '844px', r: '48px', shadow: '0 0 0 10px #1C1A17, 0 30px 60px -20px rgba(40,30,20,0.45)', status: true, mobileTop: false, bleedUp: '-50px', navBottom: '22px', outerMin: '100vh' };
     const screens = ['SPLASH', 'INTRO', 'ONB_HOUSE', 'ONB_PANTRY', 'HOME', 'PLAN', 'PLAN_DAY', 'RAID', 'RAID_RESULT', 'RAID_NOMATCH', 'RAID_COOK', 'RAID_DONE', 'DISH', 'RLT', 'RLT_SHUFFLE', 'RLT_RESULT', 'RLT_PHOTO', 'KIT', 'KIT_MEMBERS', 'KIT_DISHES', 'KIT_PANTRY', 'EDIT', 'IMPORTING'];
     const s = {}; screens.forEach(k => s[k] = sc === k);
     const ob = st.ob;
@@ -1334,7 +1391,7 @@ class Component extends DCLogic {
 
     // ----- dish -----
     const dx = dishById(st.dishId);
-    const dish = dx ? {
+    const dish = dx ? { srcIcon: dx.url ? (/tiktok/.test(dx.url) ? "url('assets/tiktok.png') center/cover" : /instagram/.test(dx.url) ? "url('assets/ig.png') center/cover" : /youtu/.test(dx.url) ? "url('assets/yt.png') center/cover" : '') : '', hasSrcIcon: !!dx.url && /tiktok|instagram|youtu/.test(dx.url),
       title: dx.title, type: dx.dishType, flavor: dx.flavor ? `${FLAVOR_EMOJI[dx.flavor] || ''} ${dx.flavor}` : 'Any flavor', source: sourceOf(dx.url),
       hero: bgImg(dx.img), heroEmoji: dx.img ? '' : emojiFor(dx), hasUrl: !!dx.url, url: dx.url || '#',
       ingLabel: `INGREDIENTS · ${this.coverage(dx)} OF ${dx.ingredients.length} IN PANTRY`,
@@ -1515,7 +1572,7 @@ class Component extends DCLogic {
         emojiOpen: !!P.emojiOpen, toggleEmoji: () => setPf({ emojiOpen: !P.emojiOpen }),
         confirmOpen: !!P.confirm, askRemove: () => setPf({ confirm: true }), cancelConfirm: () => setPf({ confirm: false }),
         emojis: EMOJIS.map(ch => ({ char: ch, bg: ch === P.emoji ? '#FFF3C4' : 'transparent', onClick: () => setPf({ emoji: ch, emojiOpen: false }) })),
-        onName: e => { const v = e.target.value; const c = COMMON.find(x => same(x.name, v)); const patch = { name: v }; if (c && P.emoji === '🧺') patch.emoji = c.emoji; if (c && !P.touched && bt != null) patch.expiry = iso(bt + c.shelf * DAYMS); setPf(patch); },
+        onName: e => { const v = e.target.value; const c = COMMON.find(x => norm(x.name) === norm(v)); const patch = { name: v }; if (c && !P.touched && bt != null) patch.expiry = iso(bt + c.shelf * DAYMS); setPf(patch); },
         onBought: e => setPf({ bought: e.target.value }), onExpiry: e => setPf({ expiry: e.target.value, touched: true }),
         info: left < 0 ? 'Already expired' : left === 0 ? 'Expires today' : `Expires in ${left} day${left === 1 ? '' : 's'}`, pill: pp.pill, pillBg: pp.pillBg, pillFg: pp.pillFg,
         op: P.name.trim() ? 1 : 0.4, cta: P.mode === 'edit' ? 'Save' : 'Add ingredient',
