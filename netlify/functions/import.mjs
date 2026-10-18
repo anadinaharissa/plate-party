@@ -44,9 +44,9 @@ const scrape = async (href, ua) => {
 const inline = async src => {
   if (!src) return '';
   try {
-    const r = await get(src, { ms: 6000, accept: 'image/*' }); if (!r.ok) return '';
-    const type = (r.headers.get('content-type') || 'image/jpeg').split(';')[0];
-    if (!type.startsWith('image/')) return '';
+    const r = await get(src, { ms: 6000, accept: 'image/webp,image/jpeg,image/png;q=0.9,*/*;q=0.5' }); if (!r.ok) return '';
+    const type = (r.headers.get('content-type') || 'image/jpeg').split(';')[0].toLowerCase();
+    if (!/^image\/(jpeg|jpg|png|webp|gif)$/.test(type)) return '';
     const buf = Buffer.from(await r.arrayBuffer()); if (buf.length > 2500000) return '';
     return `data:${type};base64,${buf.toString('base64')}`;
   } catch (e) { return ''; }
@@ -78,6 +78,7 @@ export default async (req) => {
   }
   if (!out) out = await scrape(u.href, BROWSER_UA) || await scrape(u.href, PREVIEW_UA);
   if (!out) return json({ error: 'no_meta', source }, 404);
-  const imageData = await inline(out.image);
+  let imageData = await inline(out.image);
+  if (!imageData && source === 'tiktok' && out.image) imageData = await inline(out.image.replace(/~tplv-[^?]*/, '~tplv-tiktokx-origin.jpeg'));
   return json({ title: out.title || '', image: out.image || '', imageData, source });
 };
