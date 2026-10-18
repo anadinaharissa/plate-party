@@ -1137,8 +1137,11 @@ class Component extends DCLogic {
       const q = title.match(/on Instagram:\s*["“](.+?)["”]?$/i); if (q) title = q[1];
       title = title.split(/\n/)[0].replace(/\s*[|\-–—]\s*(YouTube|TikTok|Instagram).*$/i, '').replace(/#\S+/g, '').replace(/@\S+/g, '').replace(/\s+/g, ' ').trim();
       if (title.length > 60) title = title.slice(0, 58).replace(/\s+\S*$/, '') + '…';
-      let image = j.image || '';
-      if (j.imageData) image = (await this.shrink(j.imageData)) || image;
+      const loads = src => new Promise(res => { if (!src) return res(false); const i = new Image(); const t2 = setTimeout(() => res(false), 6000); i.onload = () => { clearTimeout(t2); res(i.naturalWidth > 0); }; i.onerror = () => { clearTimeout(t2); res(false); }; i.src = src; });
+      let image = '';
+      if (j.imageData) image = (await this.shrink(j.imageData)) || (j.imageData.length < 900000 && (await loads(j.imageData)) ? j.imageData : '');
+      if (!image && j.image && (await loads(j.image))) image = j.image;
+      console.info('[import]', { source: j.source, gotData: !!j.imageData, remote: j.image, used: image ? image.slice(0, 40) : 'none' });
       return { title, image };
     } catch (e) { return null; }
   }
@@ -1153,7 +1156,7 @@ class Component extends DCLogic {
     if (!m) this.say('Couldn\'t read that link. Filled in a sample');
     const t = this.fromLink(link + ' ' + ((m && m.title) || ''));
     if (m && m.title) t.title = m.title;
-    if (m && m.image) t.img = m.image.replace(/'/g, '%27').replace(/\)/g, '%29');
+    if (m && m.image) t.img = m.image.startsWith('data:') ? m.image : m.image.replace(/'/g, '%27').replace(/\)/g, '%29');
     return t;
   }
   startImport(link, ret) {
