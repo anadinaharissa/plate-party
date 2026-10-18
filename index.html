@@ -700,7 +700,7 @@ input::placeholder{color:#A79E92;}
     <sc-if value="{{ fb.empty }}" hint-placeholder-val="{{ true }}"><div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;color:#6E655A;padding:20px"><span style="font-size:32px">🫙</span><span style="font-size:14px;font-weight:600">{{ fb.emptyText }}</span></div></sc-if>
     <sc-for list="{{ fb.items }}" as="it" hint-placeholder-count="0">
       <div style="animation:ppRow .3s cubic-bezier(.2,.8,.2,1) backwards;flex-shrink:0;background:#FAF7F2;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:6px">
-        <div style="display:flex;align-items:center;gap:8px"><span style="width:26px;height:26px;border-radius:13px;background:{{ it.av }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0">{{ it.initial }}</span><span style="font-size:14px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.name }}</span><span style="font-size:12px;color:#A79E92;white-space:nowrap">{{ it.ago }}</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:26px;height:26px;border-radius:13px;background:{{ it.av }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0">{{ it.initial }}</span><span style="font-size:14px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.name }}</span><span style="font-size:12px;color:#A79E92;white-space:nowrap">{{ it.ago }}</span><sc-if value="{{ it.canDelete }}" hint-placeholder-val="{{ false }}"><span onClick="{{ it.del }}" title="Delete" style="font-family:'Material Symbols Rounded';font-size:18px;color:#B42318;line-height:1;cursor:pointer">delete</span></sc-if></div>
         <div style="font-size:14px;line-height:1.45;white-space:pre-wrap;word-break:break-word">{{ it.text }}</div>
         <sc-if value="{{ it.showScreen }}" hint-placeholder-val="{{ false }}"><div style="align-self:flex-start;font-size:11px;font-weight:700;background:#FFFFFF;border:1px solid #E8E1D5;padding:3px 8px;border-radius:999px">📍 {{ it.screenLabel }}</div></sc-if>
       </div>
@@ -946,6 +946,15 @@ class Component extends DCLogic {
       this.setState({ fbChanges: changes, fbCgText: '', fbCgVersion: '' }); this.say('Changes posted');
     } catch (e) { this.say('Could not post'); }
   }
+  async deleteFb(id) {
+    const st = this.state;
+    try {
+      let items;
+      if (st.fbLive) items = (await this.fbPost({ type: 'deleteFeedback', id })).items;
+      else { items = (st.fbItems || []).filter(x => x.id !== id); this.saveLocal('', items); }
+      this.setState({ fbItems: items, fbDelId: null }); this.say('Feedback deleted');
+    } catch (e) { this.say('Could not delete'); }
+  }
   async deleteChange(id) {
     const st = this.state;
     try {
@@ -976,10 +985,10 @@ class Component extends DCLogic {
       isFeed: tab !== 'changes', isScreen: tab === 'screen', isChanges: tab === 'changes',
       nScreen: String(here.length), nAll: String(all.length),
       empty: tab !== 'changes' && !list.length, emptyText: tab === 'screen' ? 'No feedback on this screen yet.' : 'No feedback yet.',
-      items: list.map(x => { const n = x.name || 'Anonymous'; return { name: n, initial: n[0].toUpperCase(), av: AV[n.charCodeAt(0) % AV.length], ago: ago(x.at), text: x.text, showScreen: tab === 'all', screenLabel: x.screenLabel || x.screen }; }),
+      items: list.map(x => { const n = x.name || 'Anonymous'; return { name: n, initial: n[0].toUpperCase(), av: AV[n.charCodeAt(0) % AV.length], ago: ago(x.at), text: x.text, showScreen: tab === 'all', screenLabel: x.screenLabel || x.screen, canDelete: admin, del: () => { if (window.confirm('Delete this feedback?')) this.deleteFb(x.id); } }; }),
       noChanges: !changes.length,
       changes: changes.map((c, i) => ({ version: c.version, vBg: i === 0 ? '#C8F169' : '#FFFFFF', date: new Date(c.at).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }),
-        items: c.items.map(t => ({ text: t })), canDelete: admin, del: () => this.deleteChange(c.id) })),
+        items: c.items.map(t => ({ text: t })), canDelete: admin, del: () => { if (window.confirm(`Delete ${c.version}?`)) this.deleteChange(c.id); } })),
       cgVersion: st.fbCgVersion || '', onCgVersion: e => this.setState({ fbCgVersion: e.target.value }), cgVersionPh: `Version (e.g. v${changes.length + 1})`,
       cgText: st.fbCgText || '', onCgText: e => this.setState({ fbCgText: e.target.value }), postChange: () => this.postChange(),
       name: st.fbName ?? (localStorage.getItem(FB_KEY + '-name') || ''), onName: e => this.setState({ fbName: e.target.value }),
@@ -1118,18 +1127,30 @@ class Component extends DCLogic {
   }
   async fetchMeta(link) {
     try {
-      const c = new AbortController(), t = setTimeout(() => c.abort(), 8000);
-      const r = await fetch('/.netlify/functions/import?url=' + encodeURIComponent(link), { signal: c.signal });
+      const c = new AbortController(), t = setTimeout(() => c.abort(), 15000);
+      const r = await fetch('/.netlify/functions/import?url=' + encodeURIComponent(link.trim()) + '&t=' + Date.now(), { signal: c.signal, cache: 'no-store' });
       clearTimeout(t);
       if (!r.ok || !(r.headers.get('content-type') || '').includes('json')) return null;
       const j = await r.json();
       if (!j || (!j.title && !j.image)) return null;
-      let title = (j.title || '').replace(/\s*[|\-–—]\s*(YouTube|TikTok|Instagram).*$/i, '').replace(/#\S+/g, '').replace(/\s+/g, ' ').trim();
+      let title = j.title || '';
+      const q = title.match(/on Instagram:\s*["“](.+?)["”]?$/i); if (q) title = q[1];
+      title = title.split(/\n/)[0].replace(/\s*[|\-–—]\s*(YouTube|TikTok|Instagram).*$/i, '').replace(/#\S+/g, '').replace(/@\S+/g, '').replace(/\s+/g, ' ').trim();
       if (title.length > 60) title = title.slice(0, 58).replace(/\s+\S*$/, '') + '…';
-      return { title, image: j.image || '' };
+      let image = j.image || '';
+      if (j.imageData) image = (await this.shrink(j.imageData)) || image;
+      return { title, image };
     } catch (e) { return null; }
   }
+  shrink(src, max = 720) {
+    return new Promise(res => {
+      const i = new Image();
+      i.onload = () => { try { const s = Math.min(1, max / Math.max(i.width, i.height)), c = document.createElement('canvas'); c.width = Math.round(i.width * s); c.height = Math.round(i.height * s); c.getContext('2d').drawImage(i, 0, 0, c.width, c.height); res(c.toDataURL('image/jpeg', 0.82)); } catch (e) { res(null); } };
+      i.onerror = () => res(null); i.src = src;
+    });
+  }
   mergeMeta(link, m) {
+    if (!m) this.say('Couldn\'t read that link. Filled in a sample');
     const t = this.fromLink(link + ' ' + ((m && m.title) || ''));
     if (m && m.title) t.title = m.title;
     if (m && m.image) t.img = m.image.replace(/'/g, '%27').replace(/\)/g, '%29');
@@ -1505,7 +1526,7 @@ class Component extends DCLogic {
       flavorLabel: e.mode === 'import' ? 'FLAVOR (SUGGESTED)' : 'FLAVOR',
       thumb: bgImg(e.img), thumbEmoji: e.img ? '' : emojiFor({ dishType: e.dishType || '', title: e.title || '' }),
       url: e.url || '', onUrl: ev => this.edSet({ url: ev.target.value }),
-      reimport: () => { if (!(e.url || '').trim()) { this.say('Paste a link first'); return; } const link = e.url.trim(); this.say('Importing…'); this.fetchMeta(link).then(m => { this.edSet({ ...this.mergeMeta(link, m) }); this.say('Re-imported from link 🪄'); }); },
+      reimport: () => { if (!(e.url || '').trim()) { this.say('Paste a link first'); return; } const link = e.url.trim(); this.say('Importing…'); this.fetchMeta(link).then(m => { if (!m) { this.say('Couldn\'t read that link. Nothing changed'); return; } const t = this.mergeMeta(link, m); this.edSet({ ...t, url: link }); this.say('Re-imported from link 🪄'); }); },
       dishType: e.dishType || '', onType: ev => this.edSet({ dishType: ev.target.value }),
       title: e.title || '', onTitle: ev => this.edSet({ title: ev.target.value }),
       flavors: FLAVORS.map(f => ({ label: f, ...chipStyle(e.flavor === f), onClick: () => this.edSet({ flavor: e.flavor === f ? '' : f }) })),
