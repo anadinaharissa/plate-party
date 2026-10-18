@@ -761,7 +761,8 @@ const norm=s=>(s||'').toLowerCase().trim().replace(/es$|s$/,'');
 const same=(a,b)=>{a=norm(a);b=norm(b);return !!a&&!!b&&(a.includes(b)||b.includes(a));};
 const weekStart=()=>{const x=new Date();x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x.getTime();};
 const STRIPE='repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DFD3 10px 20px)';
-const bgImg=u=>u?`url('${u}') center/cover no-repeat`:STRIPE;
+const cssUrl=u=>String(u).replace(/;/g,'\\3b ').replace(/'/g,'%27');
+const bgImg=u=>u?`url('${cssUrl(u)}') center/cover no-repeat`:STRIPE;
 const emojiFor=d=>{const t=norm(d.dishType+' '+d.title);for(const k in TYPE_EMOJI){if(t.includes(k))return TYPE_EMOJI[k];}return '🍽️';};
 const ingEmoji=n=>{const c=COMMON.find(x=>same(x.name,n));return c?c.emoji:(same(n,'beef')?'🥩':'🥄');};
 const daysLeft=p=>Math.max(0,p.shelf-Math.floor((Date.now()-p.addedAt)/DAYMS));
@@ -1333,7 +1334,7 @@ class Component extends DCLogic {
       dots: SLIDES.map((_, i) => ({ w: i === slide ? '22px' : '8px', bg: i === slide ? INK : '#D6CEC1' })),
       prev: () => slide > 0 ? this.obSet({ slide: slide - 1 }) : this.go('SPLASH'),
       pickAvatar: () => { this.obSet({ avatar: this.cyclePhoto(ob.avatar, ['assets/household.jpg', 'assets/cover.jpg']) }); this.say('Demo: using a sample photo'); },
-      avatarBg: ob.avatar ? `url('${ob.avatar}') center/cover no-repeat` : '#FFF3C4', noAvatar: !ob.avatar,
+      avatarBg: ob.avatar ? bgImg(ob.avatar) : '#FFF3C4', noAvatar: !ob.avatar,
       avatarLabel: ob.avatar ? 'Change photo' : 'Add photo',
       next: () => slide < 3 ? this.obSet({ slide: slide + 1 }) : this.go('ONB_HOUSE'), skip: () => this.go('ONB_HOUSE'),
       prog: [1, 2, 3, 4, 5, 6].map(i => ({ bg: i <= (sc === 'ONB_PANTRY' ? 6 : sc === 'ONB_HOUSE' ? 5 : slide + 1) ? INK : LINE })),
@@ -1442,13 +1443,13 @@ class Component extends DCLogic {
       toLobby: () => this.go('RLT'), finish: () => { const ids = ((st.result && st.result.dishes) || []).filter(id => dishById(id)); const sel = ids.includes(st.rltDish) ? st.rltDish : ids[0]; const dx = dishById(sel);
         const items = dx ? pantry.filter(p => dx.ingredients.some(g => same(g, p.name))).map(p => p.id) : []; this.beginCook('rlt', sel || null, items); },
       retake: () => { if (st.photoSrc) this.useDummyPhoto(st.photoSrc === 'assets/victory.jpg' ? 'assets/noodles.jpg' : 'assets/victory.jpg'); },
-      sqBg: st.photoSrc ? `url('${st.photoSrc}') center/cover no-repeat` : '#FFE3EC', sqBorder: st.photoSrc ? '0' : '2px dashed #E58FAE',
+      sqBg: st.photoSrc ? bgImg(st.photoSrc) : '#FFE3EC', sqBorder: st.photoSrc ? '0' : '2px dashed #E58FAE',
       takePhoto: () => this.useDummyPhoto(),
       pickGallery: () => this.useDummyPhoto('assets/noodles.jpg'),
       listMax: d.members.length > 3 ? '200px' : 'none',
       listMask: d.members.length > 3 ? 'linear-gradient(to bottom, #000 78%, transparent 100%)' : 'none',
       hasPhoto: !!st.photoSrc, noPhoto: !st.photoSrc, shareOp: st.photoSrc ? 1 : 0.4,
-      photoBg: st.photo ? `url('${st.photo}') center/contain no-repeat` : '#FFE3EC',
+      photoBg: st.photo ? `url('${cssUrl(st.photo)}') center/contain no-repeat` : '#FFE3EC',
       share: () => { if (!st.photoSrc) { this.say('Take a photo first'); return; } this.share(); },
       chefUp: r ? r.chef.toUpperCase() : '',
       missionBadge: r ? (r.taste ? `MISSION: ${r.taste.label} Roulette Cleared! 🏆` : `MISSION: ${r.custom.length > 22 ? r.custom.slice(0, 21) + '…' : r.custom} Cleared! 🏆`) : ''
