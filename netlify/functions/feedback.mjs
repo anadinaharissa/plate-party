@@ -50,6 +50,11 @@ export default async (req) => {
     await store.setJSON('changes', changes);
     return json({ changes });
   }
+  if (type === 'deleteFeedback') {
+    const items = (await read('items')).filter(x => x.id !== b.id);
+    await store.setJSON('items', items);
+    return json({ items });
+  }
   if (type === 'deleteChange') {
     const changes = (await read('changes')).filter(c => c.id !== b.id);
     await store.setJSON('changes', changes);
